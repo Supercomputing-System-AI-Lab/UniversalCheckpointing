@@ -1,0 +1,117 @@
+# ============================
+# Operating System Files
+# ============================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# ============================
+# IDEs and Editors
+# ============================
+# Visual Studio Code
+.vscode/
+
+# IntelliJ / Rider / WebStorm / PhpStorm
+.idea/
+*.iml
+out/
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# Sublime
+*.sublime-workspace
+*.sublime-project
+
+# Vim swap files
+.*.swp
+
+# ============================
+# Dependency directories
+# ============================
+# Node.js
+node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Ruby
+*.gem
+*.rbc
+.bundle/
+vendor/bundle/
+
+# Java / Maven / Gradle
+target/
+*.jar
+*.war
+*.ear
+*.class
+
+# Go
+vendor/
+
+# PHP / Composer
+vendor/
+composer.lock
+
+# ============================
+# Build and Distribution
+# ============================
+build/
+dist/
+out/
+*.min.js
+*.map
+
+# ============================
+# Logs and Reports
+# ============================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test coverage
+coverage/
+*.lcov
+
+# ============================
+# Environment files
+# ============================
+.env
+.env.*.local
+!.env.example
+
+# ============================
+# Miscellaneous
+# ============================
+# Archives
+*.zip
+*.tar.gz
+*.rar
+
+# Certificates
+*.pem
+*.crt
+*.key
+
+# Database
+*.sqlite
+*.db
