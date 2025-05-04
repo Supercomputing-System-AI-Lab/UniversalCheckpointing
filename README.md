@@ -33,8 +33,25 @@ Want to know more details? Read our paper & blogs!
 
 ### Install the required dependencies
 
-DeepSpeed
-Megatron-DeepSpeed
+Install DeepSpeed
+```
+git clone https://github.com/xylian86/DeepSpeed.git
+cd DeepSpeed
+git checkout ucp
+pip install -e .
+```
+
+Install Apex
+```
+git clone https://github.com/NVIDIA/apex.git
+cd apex
+pip install --global-option="--cpp_ext" --global-option="--cuda_ext" --no-cache -v --disable-pip-version-check --no-build-isolation .  2>&1 | tee build.log
+```
+
+### Tiny example (2 GPUs)
+
+
+
 
 ### Correctness Check when converting the 
 
