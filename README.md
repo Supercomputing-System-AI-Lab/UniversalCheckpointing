@@ -36,6 +36,10 @@ Want to know more details? Read our paper & blogs!
 ```
 pip install transformers pandas numpy ninja hjson msgpack tqdm psutil accelerate future pybind11
 ```
+or
+```
+pip install -r requirements.txt
+```
 
 ### Install DeepSpeed
 Clone the DeepSpeed repository, switch to the `ucp` branch, and install it in editable mode and point `DEEPSPEED_DIR` to the folder:
@@ -102,25 +106,26 @@ ls training_datasets/gpt2_text_document.bin  # should be ~400MB
 
 ### Example 1
 `Source Parallelism Strategy` → 2 GPU: PP=2
+
 `Target Parallelism Strategy` → 1 GPU
 
-Step 1: Create distributed checkpoint.
+**Step 1**: Create distributed checkpoint.
 `bash examples/ex1/init_train_source.sh`
 
-Step 2: Convert ZeRO checkpoint of iteration 100 to Universal format.
+**Step 2**: Convert ZeRO checkpoint of iteration 100 to Universal format.
 `bash examples/ex1/convert.sh`
 
-Step 3: Resume training with Universal checkpoint of iteration 100.
+**Step 3**: Resume training with Universal checkpoint of iteration 100.
 `bash examples/ex1/resume_train_target.sh`
 
-Step 4: Plot the LM loss from both `source` and `target`.
+**Step 4**: Plot the LM loss from both `source` and `target`.
 `python3 tb_analysis/tb_analysis_script.py --tb_dir . --tb_event_key "lm-loss-training/lm loss" --plot_name "ucp_training_loss.png" --plot_title "GPT - Universal Checkpointing - Training Loss" --skip_csv`
 
 This command generates a plot overlaying the loss curves from both runs:
  - Source run (PP=2, steps 1–100)
  - Target run (PP=1, steps 101–200)
 
-Step 5: Validate the Correctness of UCP
+**Step 5**: Validate the Correctness of UCP
 Verify that the two curves align seamlessly: the loss from steps 101–200 (2 GPUs) should match the loss observed in steps 101–200 (1 GPU) after loading the universal checkpoint saved at step 100. The resulting figure should resemble the one below.
 
 <div align="center">
