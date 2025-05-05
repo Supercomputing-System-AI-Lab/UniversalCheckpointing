@@ -242,7 +242,7 @@ Verify that the two curves align seamlessly: the loss from steps 101–200 (2 GP
 
 ---
 
-Other Examples:
+### Other Examples:
 For more demonstrations—such as 3D parallelism, BF16 precision, and the LLaMA model—please see the [Megatron-DeepSpeed UCP blog](https://github.com/xylian86/Megatron-DeepSpeed/tree/ucp/examples_deepspeed/universal_checkpointing) for more examples, including 3D parallelism and Llama Model, BF16 types.
 
 Feel free to customize the model configuration by adjusting the hidden size, number of layers, and various parallelism strategies.
