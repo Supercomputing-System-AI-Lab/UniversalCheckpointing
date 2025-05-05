@@ -1,0 +1,11 @@
+transformers
+pandas
+numpy
+ninja
+hjson
+msgpack
+tqdm
+psutil
+accelerate
+future
+pybind11 
