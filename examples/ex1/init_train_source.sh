@@ -3,9 +3,11 @@
 
 DIR=`pwd`
 DATETIME=`date +'date_%y-%m-%d_time_%H-%M-%S'`
-BASE_DATA_PATH=${UCP_DIR}/training_datasets
+BASE_DATA_PATH=$UCP_DIR/training_datasets
+echo "BASE_DATA_PATH: $BASE_DATA_PATH"
 DATASET=${BASE_DATA_PATH}/gpt2_text_document
 VOCAB_PATH=${BASE_DATA_PATH}/gpt2-vocab.json
+echo "VOCAB_PATH: $VOCAB_PATH"
 MERGE_PATH=${BASE_DATA_PATH}/gpt2-merges.txt
 
 
@@ -30,7 +32,7 @@ PP=2
 DP=1
 SP=1
 WORLD_SIZE=$((TP*PP*DP*SP))
-GLOBAL_BATCH=16
+GLOBAL_BATCH=4
 MICRO_BATCH=$((GLOBAL_BATCH/WORLD_SIZE))
 TRAIN_ITERS=100000
 LR=6.0e-3
@@ -44,10 +46,9 @@ LOAD_SP=$SP
 RUN_TAG="save"
 # RUN_TAG="ref_load${LOAD_TP}_${LOAD_PP}_${LOAD_DP}"
 
-EXP_DIR="z${ZERO_STAGE}_uni_ckpt" 
-CHECKPOINT_PATH=${EXP_DIR}/checkpoints/gpt2/z${ZERO_STAGE}/$DTYPE/tp${TP}_pp${PP}_dp${DP}_sp${SP}_${SIZE_TAG}
-LOAD_CHECKPOINT_PATH=${EXP_DIR}/checkpoints/gpt2/z${ZERO_STAGE}/$DTYPE/tp${LOAD_TP}_pp${LOAD_PP}_dp${LOAD_DP}_sp${LOAD_SP}_${SIZE_TAG}
-LOG_DIR="${EXP_DIR}/tensorboard/$DTYPE/tp${TP}_pp${PP}_dp${DP}_sp${SP}_hd${HIDDEN}_nl${LAYERS}_gbsz${GLOBAL_BATCH}_mbsz${MICRO_BATCH}_z${ZERO_STAGE}_LR_${LR}_${MIN_LR}_${DTYPE}_${SIZE_TAG}_${RUN_TAG}"
+CHECKPOINT_PATH=checkpoints/gpt2/z${ZERO_STAGE}/$DTYPE/tp${TP}_pp${PP}_dp${DP}_sp${SP}_${SIZE_TAG}
+LOAD_CHECKPOINT_PATH=checkpoints/gpt2/z${ZERO_STAGE}/$DTYPE/tp${LOAD_TP}_pp${LOAD_PP}_dp${LOAD_DP}_sp${LOAD_SP}_${SIZE_TAG}
+LOG_DIR="tensorboard/$DTYPE/tp${TP}_pp${PP}_dp${DP}_sp${SP}_hd${HIDDEN}_nl${LAYERS}_gbsz${GLOBAL_BATCH}_mbsz${MICRO_BATCH}_z${ZERO_STAGE}_LR_${LR}_${MIN_LR}_${DTYPE}_${SIZE_TAG}_${RUN_TAG}"
 mkdir -p $LOG_DIR
 
 while [[ $# -gt 0 ]]
@@ -145,7 +146,7 @@ cat <<EOT > $CONFIG_JSON
 EOT
 
 WORKER_STR="--num_nodes 1 --num_gpus $WORLD_SIZE"
-run_cmd="deepspeed --master_port 29700 $WORKER_STR ${DIR}/pretrain_gpt.py $@ ${options}"
+run_cmd="deepspeed --master_port 29700 $WORKER_STR ${Megatron_DeepSpeed_DIR}/pretrain_gpt.py $@ ${options}"
 
 
 echo ${options}

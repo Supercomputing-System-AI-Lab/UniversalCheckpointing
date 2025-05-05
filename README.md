@@ -9,12 +9,12 @@ Universal Checkpointing has been adopted by prominent organizations and research
 
 Moreover, Universal Checkpointing has been tested on:
 
-* **AMD** cluster by AMD researchers. AMD will share experience at [FMS’25](https://futurememorystorage.com): “Flexible, Efficient, Resilient Training on AMD GPUs with DeepSpeed UCP”
+* **AMD** cluster by AMD researchers. AMD will share experience at [FMS'25](https://futurememorystorage.com): "Flexible, Efficient, Resilient Training on AMD GPUs with DeepSpeed UCP"
 * [Aurora **Intel** GPU cluster](https://www.alcf.anl.gov/aurora) by [Argonne National Lab](https://www.anl.gov)
 
 ## 📙 About
 
-Universal Checkpointing (UCP) is a novel checkpointing system that enables flexible and efficient model training with reconfigurable parallelism.
+Universal Checkpointing (UCP) is a novel checkpointing system that enables flexible and efficient model training with reconfigurable parallelism. We have implemented and open-sourced Universal Checkpointing in DeepSpeed.
 
 Why Universal Checkpointing?
 
@@ -31,30 +31,91 @@ Want to know more details? Read our paper & blogs!
 
 ## 🔥 Quick Start
 
-### Install the required dependencies
+### Install Required Dependencies
 
-Install DeepSpeed
+```
+pip install transformers pandas numpy ninja hjson msgpack tqdm psutil accelerate future pybind11
+```
+
+### Install DeepSpeed
+Clone the DeepSpeed repository, switch to the `ucp` branch, and install it in editable mode:
+<details>
+<summary>Expand for DeepSpeed installation</summary>
+
 ```
 git clone https://github.com/xylian86/DeepSpeed.git
 cd DeepSpeed
 git checkout ucp
 pip install -e .
 ```
+</details>
 
-Install Apex
+### Install NVIDIA Apex
+Clone the Apex repository, switch to the `23.05-devel` branch, and install with CUDA extensions enabled:
+<details>
+<summary>Expand for Apex installation</summary>
+
 ```
-git clone https://github.com/NVIDIA/apex.git
+git clone https://github.com/NVIDIA/apex
 cd apex
-pip install --global-option="--cpp_ext" --global-option="--cuda_ext" --no-cache -v --disable-pip-version-check --no-build-isolation .  2>&1 | tee build.log
+git checkout 23.05-devel
+pip install -r requirements.txt
+pip install --global-option="--cpp_ext" --global-option="--cuda_ext" --no-cache -v --disable-pip-version-check --no-build-isolation .
+```
+</details>
+
+### Download Megatron-DeepSpeed Repository
+Clone the Megatron-DeepSpeed repository and switch to the `ucp` branch:
+<details>
+<summary>Expand for Megatron-DeepSpeed download</summary>
+
+```
+git clone git@github.com:xylian86/Megatron-DeepSpeed.git
+cd Megatron-DeepSpeed
+git checkout ucp
+```
+</details>
+
+### Prepare Training Datasets
+For convenience, we provide large binary dataset files that you can use directly; due to their size, they are tracked with Git LFS. To download and verify:
+
+```bash
+# 1. Install Git LFS
+# Ubuntu/Debian:
+sudo apt-get install git-lfs
+# macOS (Homebrew):
+brew install git-lfs
+
+# 2. Initialize Git LFS and pull the data
+git lfs install
+git lfs pull
+
+# 3. Verify the dataset
+ls training_datasets/gpt2_text_document.bin  # should be ~400MB
 ```
 
-### Tiny example (2 GPUs)
+**Note**: Feel free to contact us if you encounter any issues setting up the environment or using the provided artifacts.
 
+## Tiny example (Minimal Requirement: 2 GPUs)
 
+### Example 1
+`Source Parallelism Strategy` → 2 GPU: PP=2
+`Target Parallelism Strategy` → 1 GPU
+
+Step 1: Create distributed checkpoint.
+`bash examples/ex1/init_train_source.sh`
+
+Step 2: Convert ZeRO checkpoint of iteration 100 to Universal format.
+`bash examples/ex1/convert.sh`
+
+Step 3: Resume training with Universal checkpoint of iteration 100.
+`bash examples/ex1/resume_train_target.sh`
+
+Step 4: Validate the correctness.
+`bash `
 
 
 ### Correctness Check when converting the 
-
 
 ### Efficiency Check 
 
