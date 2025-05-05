@@ -122,7 +122,7 @@ ls training_datasets/gpt2_text_document.bin  # should be ~400MB
 `python3 tb_analysis/tb_analysis_script.py --tb_dir . --tb_event_key "lm-loss-training/lm loss" --plot_name "ucp_training_loss.png" --plot_title "GPT - Universal Checkpointing - Training Loss" --skip_csv`
 
 This command generates a plot overlaying the loss curves from both runs:
- - Source run (PP=2, steps 1–100)
+ - Source run (PP=2, steps 1–200)
  - Target run (PP=1, steps 101–200)
 
 **Step 5**: Validate the Correctness of UCP
@@ -141,6 +141,9 @@ Verify that the two curves align seamlessly: the loss from steps 101–200 (2 GP
 
 `Target Parallelism Strategy` → 1 GPU
 
+<details>
+<summary>Expand for Example 2 Details</summary>
+
 **Step 1**: Create distributed checkpoint.
 `bash examples/ex2/init_train_source.sh`
 
@@ -154,7 +157,7 @@ Verify that the two curves align seamlessly: the loss from steps 101–200 (2 GP
 `python3 tb_analysis/tb_analysis_script.py --tb_dir . --tb_event_key "lm-loss-training/lm loss" --plot_name "ucp_training_loss.png" --plot_title "GPT - Universal Checkpointing - Training Loss" --skip_csv`
 
 This command generates a plot overlaying the loss curves from both runs:
- - Source run (TP=2, steps 1–100)
+ - Source run (TP=2, steps 1–200)
  - Target run (TP=1, steps 101–200)
 
 **Step 5**: Validate the Correctness of UCP
@@ -166,6 +169,8 @@ Verify that the two curves align seamlessly: the loss from steps 101–200 (2 GP
   *Figure: Training LM loss curve for first 200 training steps of Step 1 (TP=2) and training steps 101 to 200 of Step 3 (TP=1), which was loaded using the Universal Checkpoint*
 </div>
 
+</details>
+
 ---
 
 ### Example 3
@@ -173,20 +178,23 @@ Verify that the two curves align seamlessly: the loss from steps 101–200 (2 GP
 
 `Target Parallelism Strategy` → 1 GPU
 
+<details>
+<summary>Expand for Example 3 Details</summary>
+
 **Step 1**: Create distributed checkpoint.
-`bash examples/ex2/init_train_source.sh`
+`bash examples/ex3/init_train_source.sh`
 
 **Step 2**: Convert ZeRO checkpoint of iteration 100 to Universal format.
-`bash examples/ex2/convert.sh`
+`bash examples/ex3/convert.sh`
 
 **Step 3**: Resume training with Universal checkpoint of iteration 100.
-`bash examples/ex2/resume_train_target.sh`
+`bash examples/ex3/resume_train_target.sh`
 
 **Step 4**: Plot the LM loss from both `source` and `target`.
 `python3 tb_analysis/tb_analysis_script.py --tb_dir . --tb_event_key "lm-loss-training/lm loss" --plot_name "ucp_training_loss.png" --plot_title "GPT - Universal Checkpointing - Training Loss" --skip_csv`
 
 This command generates a plot overlaying the loss curves from both runs:
- - Source run (DP=2, steps 1–100)
+ - Source run (DP=2, steps 1–200)
  - Target run (DP=1, steps 101–200)
 
 **Step 5**: Validate the Correctness of UCP
@@ -196,6 +204,38 @@ Verify that the two curves align seamlessly: the loss from steps 101–200 (2 GP
   <img src="gallary/ex3_result.png" alt="" width="600"/>
 
   *Figure: Training LM loss curve for first 200 training steps of Step 1 (DP=2, ZeRO stage 1) and training steps 101 to 200 of Step 3 (DP=1), which was loaded using the Universal Checkpoint*
+</div>
+
+</details>
+
+### Example 4
+`Source Parallelism Strategy` → 2 GPU: TP=2
+
+`Target Parallelism Strategy` → 2 GPU: PP=2
+
+**Step 1**: Create distributed checkpoint.
+`bash examples/ex4/init_train_source.sh`
+
+**Step 2**: Convert ZeRO checkpoint of iteration 100 to Universal format.
+`bash examples/ex4/convert.sh`
+
+**Step 3**: Resume training with Universal checkpoint of iteration 100.
+`bash examples/ex4/resume_train_target.sh`
+
+**Step 4**: Plot the LM loss from both `source` and `target`.
+`python3 tb_analysis/tb_analysis_script.py --tb_dir . --tb_event_key "lm-loss-training/lm loss" --plot_name "ucp_training_loss.png" --plot_title "GPT - Universal Checkpointing - Training Loss" --skip_csv`
+
+This command generates a plot overlaying the loss curves from both runs:
+ - Source run (TP=2, steps 1–200)
+ - Target run (PP=2, steps 101–200)
+
+**Step 5**: Validate the Correctness of UCP
+Verify that the two curves align seamlessly: the loss from steps 101–200 (2 GPUs) should match the loss observed in steps 101–200 (1 GPU) after loading the universal checkpoint saved at step 100. The resulting figure should resemble the one below.
+
+<div align="center">
+  <img src="gallary/ex4_result.png" alt="" width="600"/>
+
+  *Figure: Training LM loss curve for first 200 training steps of Step 1 (TP=2) and training steps 101 to 200 of Step 3 (PP=2), which was loaded using the Universal Checkpoint*
 </div>
 
 ## 📜 Citation
