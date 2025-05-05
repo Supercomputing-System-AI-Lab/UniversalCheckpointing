@@ -35,14 +35,14 @@ WORLD_SIZE=$((TP*PP*DP*SP))
 GLOBAL_BATCH=4
 MICRO_BATCH=$((GLOBAL_BATCH/WORLD_SIZE))
 TRAIN_ITERS=100000
-LR=6.0e-3
-MIN_LR=6.0e-4
+LR=2.0e-3
+MIN_LR=2.0e-4
 
 # 3D parallelism of checkpoint to load
-LOAD_TP=$TP
-LOAD_PP=$PP
-LOAD_DP=$DP
-LOAD_SP=$SP
+LOAD_TP=1
+LOAD_PP=2
+LOAD_DP=1
+LOAD_SP=1
 RUN_TAG="save"
 # RUN_TAG="ref_load${LOAD_TP}_${LOAD_PP}_${LOAD_DP}"
 
@@ -147,7 +147,7 @@ cat <<EOT > $CONFIG_JSON
 EOT
 
 WORKER_STR="--num_nodes 1 --num_gpus $WORLD_SIZE"
-run_cmd="deepspeed --master_port 29700 $WORKER_STR ${Megatron_DeepSpeed_DIR}/pretrain_gpt.py $@ ${options}"
+run_cmd="deepspeed --master_port 29700 $WORKER_STR ${MEGATRON_DEEPSPEED_DIR}/pretrain_gpt.py $@ ${options}"
 
 
 echo ${options}

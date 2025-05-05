@@ -38,7 +38,7 @@ pip install transformers pandas numpy ninja hjson msgpack tqdm psutil accelerate
 ```
 
 ### Install DeepSpeed
-Clone the DeepSpeed repository, switch to the `ucp` branch, and install it in editable mode:
+Clone the DeepSpeed repository, switch to the `ucp` branch, and install it in editable mode and point `DEEPSPEED_DIR` to the folder:
 <details>
 <summary>Expand for DeepSpeed installation</summary>
 
@@ -47,6 +47,7 @@ git clone https://github.com/xylian86/DeepSpeed.git
 cd DeepSpeed
 git checkout ucp
 pip install -e .
+export DEEPSPEED_DIR="$PWD"
 ```
 </details>
 
@@ -65,7 +66,7 @@ pip install --global-option="--cpp_ext" --global-option="--cuda_ext" --no-cache 
 </details>
 
 ### Download Megatron-DeepSpeed Repository
-Clone the Megatron-DeepSpeed repository and switch to the `ucp` branch:
+Clone the Megatron-DeepSpeed repository and switch to the `ucp` branch and point `MEGATRON-DEEPSPEED_DIR` to the folder:
 <details>
 <summary>Expand for Megatron-DeepSpeed download</summary>
 
@@ -73,6 +74,7 @@ Clone the Megatron-DeepSpeed repository and switch to the `ucp` branch:
 git clone git@github.com:xylian86/Megatron-DeepSpeed.git
 cd Megatron-DeepSpeed
 git checkout ucp
+export MEGATRON_DEEPSPEED_DIR="$PWD"
 ```
 </details>
 
@@ -111,14 +113,21 @@ Step 2: Convert ZeRO checkpoint of iteration 100 to Universal format.
 Step 3: Resume training with Universal checkpoint of iteration 100.
 `bash examples/ex1/resume_train_target.sh`
 
-Step 4: Validate the correctness.
-`bash `
+Step 4: Plot the LM loss from both `source` and `target`.
+`python3 tb_analysis/tb_analysis_script.py --tb_dir . --tb_event_key "lm-loss-training/lm loss" --plot_name "ucp_training_loss.png" --plot_title "GPT - Universal Checkpointing - Training Loss" --skip_csv`
 
+This command generates a plot overlaying the loss curves from both runs:
+ - Source run (PP=2, steps 1–100)
+ - Target run (PP=1, steps 101–200)
 
-### Correctness Check when converting the 
+Step 5: Validate the Correctness of UCP
+Verify that the two curves align seamlessly: the loss from steps 101–200 (2 GPUs) should match the loss observed in steps 101–200 (1 GPU) after loading the universal checkpoint saved at step 100. The resulting figure should resemble the one below.
 
-### Efficiency Check 
+<div align="center">
+  <img src="gallary/ex1_result.png" alt="" width="600"/>
 
+  *Figure: Training LM loss curve for first 200 training steps of Step 1 (PP=2) and training steps 101 to 200 of Step 3 (PP=1), which was loaded using the Universal Checkpoint*
+</div>
 
 ## 📜 Citation
 

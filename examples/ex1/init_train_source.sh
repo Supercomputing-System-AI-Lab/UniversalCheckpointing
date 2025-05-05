@@ -146,7 +146,7 @@ cat <<EOT > $CONFIG_JSON
 EOT
 
 WORKER_STR="--num_nodes 1 --num_gpus $WORLD_SIZE"
-run_cmd="deepspeed --master_port 29700 $WORKER_STR ${Megatron_DeepSpeed_DIR}/pretrain_gpt.py $@ ${options}"
+run_cmd="deepspeed --master_port 29700 $WORKER_STR ${MEGATRON_DEEPSPEED_DIR}/pretrain_gpt.py $@ ${options}"
 
 
 echo ${options}
