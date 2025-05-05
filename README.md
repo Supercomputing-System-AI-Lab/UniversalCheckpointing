@@ -208,6 +208,8 @@ Verify that the two curves align seamlessly: the loss from steps 101–200 (2 GP
 
 </details>
 
+---
+
 ### Example 4
 `Source Parallelism Strategy` → 2 GPU: TP=2
 
@@ -237,6 +239,13 @@ Verify that the two curves align seamlessly: the loss from steps 101–200 (2 GP
 
   *Figure: Training LM loss curve for first 200 training steps of Step 1 (TP=2) and training steps 101 to 200 of Step 3 (PP=2), which was loaded using the Universal Checkpoint*
 </div>
+
+---
+
+Other Examples:
+For more demonstrations—such as 3D parallelism, BF16 precision, and the LLaMA model—please see the [Megatron-DeepSpeed UCP blog](https://github.com/xylian86/Megatron-DeepSpeed/tree/ucp/examples_deepspeed/universal_checkpointing) for more examples, including 3D parallelism and Llama Model, BF16 types.
+
+Feel free to customize the model configuration by adjusting the hidden size, number of layers, and various parallelism strategies.
 
 ## 📜 Citation
 
