@@ -1,0 +1,1 @@
+ python3 $DEEPSPEED_DIR/deepspeed/checkpoint/ds_to_universal.py --input_folder checkpoints/gpt2/z1/fp16/tp1_pp1_dp2_sp1_125M/global_step100 --output_folder checkpoints/gpt2/z1/fp16/tp1_pp1_dp2_sp1_125M/global_step100_universal
