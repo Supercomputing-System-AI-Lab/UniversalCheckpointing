@@ -247,6 +247,14 @@ For more demonstrations—such as 3D parallelism, BF16 precision, and the LLaMA 
 
 Feel free to customize the model configuration by adjusting the hidden size, number of layers, and various parallelism strategies.
 
+## Efficiency Optimization
+
+When running a conversion, such as `bash examples/ex1/convert.sh`, the script will display the time taken for the `extract` and `merge` steps in the format `[INFO] Extracting took xx.xx s` and `[INFO] Merging took xx.xx s`.
+
+### Nested Parallel Reconfiguration
+
+UCP is designed to leverage multiple CPU cores to maximize bandwidth between the CPU and storage. You can control the number of parallel workers using the `--num_extract_workers` and `--num_merge_workers` arguments. For multi-node environments, you can further increase efficiency by utilizing aggregated bandwidth with the script `DeepSpeed/deepspeed/checkpoint/ds_to_universal_multi-node.py`.
+
 ## 📜 Citation
 
 ```bibtex
