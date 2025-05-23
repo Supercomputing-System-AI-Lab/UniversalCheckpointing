@@ -75,7 +75,7 @@ Clone the Megatron-DeepSpeed repository and switch to the `ucp` branch and point
 <summary>Expand for Megatron-DeepSpeed download</summary>
 
 ```
-git clone git@github.com:xylian86/Megatron-DeepSpeed.git
+git clone https://github.com/xylian86/Megatron-DeepSpeed.git
 cd Megatron-DeepSpeed
 git checkout ucp
 export MEGATRON_DEEPSPEED_DIR="$PWD"
