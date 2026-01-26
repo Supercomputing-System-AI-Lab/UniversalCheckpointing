@@ -1,4 +1,4 @@
-# UCX: Universal Checkpointing with Extensions
+# UCX
 
 UCX is a resilient training framework built on [Universal Checkpointing](https://github.com/Supercomputing-System-AI-Lab/UniversalCheckpointing). It makes reconfigurable recovery from checkpoints correct and efficient. It provides two key features: (1) **Irregular world size support** for flexible parallelism configurations, and (2) **Optimized checkpoint conversion** with offset-based reading for reduced I/O overhead.
 
@@ -45,7 +45,7 @@ Modify training hyperparameters by editing the configuration inside these script
 
 ### Example 2: Optimized UCP Conversion
 
-UCX introduces offset-based reading to accelerate the Universal Checkpoint (UCP) conversion process. DeepSpeed checkpoint (DCP) files are memory-mapped, and only the byte ranges corresponding to requested slices are loaded. This eliminates intermediate files and reduces I/O volume by approximately 50%.
+UCX introduces offset-based reading to accelerate the Universal Checkpoint (UCP) conversion process. Distributed checkpoint (DCP) files are memory-mapped, and only the byte ranges corresponding to requested slices are loaded. This eliminates intermediate files and reduces I/O volume by approximately 50%.
 
 **Prerequisites**: Install `mpi4py`
 
@@ -53,7 +53,7 @@ UCX introduces offset-based reading to accelerate the Universal Checkpoint (UCP)
 sbatch ucx_conversion.slurm
 ```
 
-**Key parameters** in `ucx_conversion.slurm`:
+**Parameters** in `ucx_conversion.slurm`:
 - `IN_FOLDER`: Path to DeepSpeed checkpoint folder
 - `OUT_FOLDER`: Output path for universal checkpoint
 - `N` (num_workers): Number of parallel workers per node
